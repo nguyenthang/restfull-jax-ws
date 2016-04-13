@@ -19,10 +19,11 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import com.restfull.shop.domain.Customer;
+import com.restfull.shop.services.CustomerResource;
 
 
 @Path("customers")
-public class CustomerResource {
+public class CustomerResourceService implements CustomerResource {
 
 	private Map<Integer, Customer> customerDB = new ConcurrentHashMap<Integer, Customer>();
 	
@@ -39,7 +40,7 @@ public class CustomerResource {
 		
 	}
 
-	private Customer readCustomer(InputStream is) {
+	public Customer readCustomer(InputStream is) {
 		try{
 			DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			Document doc = builder.parse(is);
@@ -70,10 +71,10 @@ public class CustomerResource {
 					cust.setFirstName(elements.getTextContent());
 				}
 			}
-			
+		
+			return cust;
 		}catch(Exception e){
 			throw new WebApplicationException(e, Response.Status.BAD_REQUEST);
-		}
-		return null;
+		}		
 	}
 }
